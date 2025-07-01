@@ -8,24 +8,22 @@ class CommandFactory {
     private static final int DEST_ARGS_COUNT = 3;
     private static final int PRINT_ARGS_COUNT = 1;
 
+    @FunctionalInterface
     private interface CommandParser {
         Command parse(String[] parts, Board board);
     }
 
-    private final java.util.Map<String, CommandParser> parsers = new java.util.HashMap<>();
-
-    CommandFactory() {
-        parsers.put("SOURCE", this::parseSource);
-        parsers.put("DESTINATION", this::parseDestination);
-        parsers.put("PRINT_POWER", this::parsePrintPower);
-    }
+    private static final java.util.Map<String, CommandParser> PARSERS = java.util.Map.of(
+            "SOURCE", CommandFactory::parseSource,
+            "DESTINATION", CommandFactory::parseDestination,
+            "PRINT_POWER", CommandFactory::parsePrintPower);
 
     Command fromLine(String line, Board board) {
         if (line == null || line.trim().isEmpty()) {
             return null;
         }
         String[] parts = line.trim().split("\\s+");
-        CommandParser parser = parsers.get(parts[0]);
+        CommandParser parser = PARSERS.get(parts[0]);
         if (parser == null) {
             System.err.println("Warning: Unknown command: " + parts[0]);
             return null;
@@ -33,7 +31,7 @@ class CommandFactory {
         return parser.parse(parts, board);
     }
 
-    private Command parseSource(String[] parts, Board board) {
+    private static Command parseSource(String[] parts, Board board) {
         validateLength(parts, SOURCE_ARGS_COUNT);
         int sX = parseInt(parts[1], "source X");
         int sY = parseInt(parts[2], "source Y");
@@ -42,7 +40,7 @@ class CommandFactory {
         return new SourceCommand(sX, sY, dir);
     }
 
-    private Command parseDestination(String[] parts, Board board) {
+    private static Command parseDestination(String[] parts, Board board) {
         validateLength(parts, DEST_ARGS_COUNT);
         int dX = parseInt(parts[1], "destination X");
         int dY = parseInt(parts[2], "destination Y");
@@ -50,7 +48,7 @@ class CommandFactory {
         return new DestinationCommand(dX, dY);
     }
 
-    private Command parsePrintPower(String[] parts, Board board) {
+    private static Command parsePrintPower(String[] parts, Board board) {
         validateLength(parts, PRINT_ARGS_COUNT);
         return new PrintPowerCommand();
     }
