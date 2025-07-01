@@ -109,16 +109,18 @@ public class CommandProcessor {
     }
 
     private int parseCoordinate(String coordStr, String coordName) {
+        int coord;
         try {
-            int coord = Integer.parseInt(coordStr);
-            if (coord < DEFAULT_COORDINATE || coord >= GMan.GRID_SIZE) {
-                throw new IllegalArgumentException(
-                    String.format("%s coordinate must be between 0 and %d", coordName, GMan.GRID_SIZE - 1));
-            }
-            return coord;
+            coord = Integer.parseInt(coordStr);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid coordinate: " + coordStr + ". Must be an integer.");
         }
+
+        if (coord < DEFAULT_COORDINATE || coord >= GMan.GRID_SIZE) {
+            throw new IllegalArgumentException(
+                String.format("%s coordinate must be between 0 and %d", coordName, GMan.GRID_SIZE - 1));
+        }
+        return coord;
     }
 
     private void printRemainingPower() {
