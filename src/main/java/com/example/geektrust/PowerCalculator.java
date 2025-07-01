@@ -10,28 +10,28 @@ public class PowerCalculator implements PathFindingStrategy {
 
     
     @Override
-    public int calculatePower(int sX, int sY, int dX, int dY, String dir) {
-        if (!GMan.inBounds(sX, sY) || !GMan.inBounds(dX, dY)) {
+    public int calculatePower(Position source, Position destination, String dir) {
+        if (!GMan.inBounds(source.getX(), source.getY()) || !GMan.inBounds(destination.getX(), destination.getY())) {
             return 0;
         }
-        int minPowerSpent = dijkstra(sX, sY, dX, dY, dir);
+        int minPowerSpent = dijkstra(source, destination, dir);
         int remaining = INITIAL_POWER - minPowerSpent;
         return Math.max(remaining, 0);
     }
 
     
-    private int dijkstra(int sX, int sY, int dX, int dY, String dir) {
+    private int dijkstra(Position source, Position dest, String dir) {
         int startDirIdx = GMan.getDirectionIndex(dir);
         int[][][] minPower = initializePowerGrid();
-        PriorityQueue<State> pq = initializePriorityQueue(sX, sY, startDirIdx);
-        
-        minPower[sX][sY][startDirIdx] = 0;
+        PriorityQueue<State> pq = initializePriorityQueue(source.getX(), source.getY(), startDirIdx);
+
+        minPower[source.getX()][source.getY()][startDirIdx] = 0;
         int minPowerSpent = Integer.MAX_VALUE;
-        
+
         while (!pq.isEmpty()) {
             State curr = pq.poll();
 
-            if (isDestinationReached(curr, dX, dY)) {
+            if (isDestinationReached(curr, dest.getX(), dest.getY())) {
                 minPowerSpent = Math.min(minPowerSpent, curr.getPowerSpent());
                 continue;
             }

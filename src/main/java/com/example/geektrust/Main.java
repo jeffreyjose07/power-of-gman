@@ -159,7 +159,9 @@ public class Main {
     
     private void printRemainingPower() {
         try {
-            int remainingPower = pathFinder.calculatePower(sourceX, sourceY, destX, destY, direction);
+            Position src = new Position(sourceX, sourceY);
+            Position dst = new Position(destX, destY);
+            int remainingPower = pathFinder.calculatePower(src, dst, direction);
             System.out.println("POWER " + remainingPower);
         } catch (Exception e) {
             System.err.println("Error calculating power: " + e.getMessage());
