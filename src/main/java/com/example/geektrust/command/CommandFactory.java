@@ -53,14 +53,14 @@ class CommandFactory {
         return new PrintPowerCommand();
     }
 
-    private void validateLength(String[] parts, int expected) {
+    private static void validateLength(String[] parts, int expected) {
         if (parts.length != expected) {
             throw new IllegalArgumentException(
                     String.format("Expected %d arguments but got %d", expected - 1, parts.length - 1));
         }
     }
 
-    private int parseInt(String str, String name) {
+    private static int parseInt(String str, String name) {
         try {
             return Integer.parseInt(str);
         } catch (NumberFormatException e) {
@@ -68,7 +68,7 @@ class CommandFactory {
         }
     }
 
-    private void validateCoord(Board board, int x, int y) {
+    private static void validateCoord(Board board, int x, int y) {
         if (!board.inBounds(x, y)) {
             throw new IllegalArgumentException(
                     String.format("coordinate must be between 0 and %d", board.getSize() - 1));
