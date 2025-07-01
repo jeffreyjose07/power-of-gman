@@ -3,6 +3,10 @@ package com.example.geektrust.command;
 import com.example.geektrust.model.Board;
 import com.example.geektrust.model.Direction;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 class CommandFactory {
     private static final int SOURCE_ARGS_COUNT = 4;
     private static final int DEST_ARGS_COUNT = 3;
@@ -13,10 +17,12 @@ class CommandFactory {
         Command parse(String[] parts, Board board);
     }
 
-    private static final java.util.Map<String, CommandParser> PARSERS = java.util.Map.of(
-            "SOURCE", CommandFactory::parseSource,
-            "DESTINATION", CommandFactory::parseDestination,
-            "PRINT_POWER", CommandFactory::parsePrintPower);
+    private static final Map<String, CommandParser> PARSERS = new HashMap<>();
+    static {
+        PARSERS.put("SOURCE", CommandFactory::parseSource);
+        PARSERS.put("DESTINATION", CommandFactory::parseDestination);
+        PARSERS.put("PRINT_POWER", CommandFactory::parsePrintPower);
+    }
 
     Command fromLine(String line, Board board) {
         if (line == null || line.trim().isEmpty()) {
