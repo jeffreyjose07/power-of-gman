@@ -45,7 +45,7 @@ public class CommandProcessorTest {
             this.power = power;
         }
         @Override
-        public int calculatePower(Position source, Position destination, String direction) {
+        public int calculatePower(Position source, Position destination, Direction direction) {
             return power;
         }
     }

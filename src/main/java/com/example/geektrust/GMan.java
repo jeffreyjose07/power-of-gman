@@ -1,76 +1,45 @@
 package com.example.geektrust;
 
-
 public class GMan {
-    private int x;
-    private int y;
-    private int dirIdx;
-    
-    
-    public static final String[] DIRECTIONS = {"N", "E", "S", "W"};
-    
-    
-    public static final int[][] DIR_DELTAS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    public static final int X_INDEX = 0;
-    public static final int Y_INDEX = 1;
+    private Position position;
+    private Direction direction;
+    private final Board board;
 
-    public static final int NUM_DIRECTIONS = 4;
-    public static final int TURN_LEFT_OFFSET = 3;
-    public static final int TURN_RIGHT_OFFSET = 1;
-    
-    
-    public static final int GRID_SIZE = 7;
-
-    
-    public GMan(int x, int y, String dir) {
-        this.x = x;
-        this.y = y;
-        this.dirIdx = getDirectionIndex(dir);
+    public GMan(int x, int y, Direction dir) {
+        this(new Board(), new Position(x, y), dir);
     }
 
-    
+    public GMan(Board board, Position position, Direction dir) {
+        this.board = board;
+        this.position = position;
+        this.direction = dir;
+    }
+
     public int getX() {
-        return x;
+        return position.getX();
     }
 
-    
     public int getY() {
-        return y;
+        return position.getY();
     }
 
-    
-    public int getDirIdx() {
-        return dirIdx;
+    public Direction getDirection() {
+        return direction;
     }
 
-    
     public void moveForward() {
-        x += DIR_DELTAS[dirIdx][X_INDEX];
-        y += DIR_DELTAS[dirIdx][Y_INDEX];
+        position = position.move(direction);
     }
 
-    
     public void turnLeft() {
-        dirIdx = (dirIdx + TURN_LEFT_OFFSET) % NUM_DIRECTIONS;
+        direction = direction.left();
     }
 
-    
     public void turnRight() {
-        dirIdx = (dirIdx + TURN_RIGHT_OFFSET) % NUM_DIRECTIONS;
+        direction = direction.right();
     }
 
-    
-    public static int getDirectionIndex(String dir) {
-        for (int i = 0; i < DIRECTIONS.length; i++) {
-            if (DIRECTIONS[i].equals(dir)) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("Invalid direction: " + dir + ". Must be one of: N, E, S, W");
-    }
-
-    
-    public static boolean inBounds(int x, int y) {
-        return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
+    public boolean inBounds() {
+        return board.inBounds(position);
     }
 }

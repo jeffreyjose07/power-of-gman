@@ -6,16 +6,15 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class CommandProcessor {
-    private static final String DEFAULT_DIRECTION = "N";
     private static final int DEFAULT_COORDINATE = 0;
 
     private int sourceX = DEFAULT_COORDINATE;
     private int sourceY = DEFAULT_COORDINATE;
     private int destX = DEFAULT_COORDINATE;
     private int destY = DEFAULT_COORDINATE;
-    private String direction = DEFAULT_DIRECTION;
+    private Direction direction = Direction.N;
     private final PathFindingStrategy pathFinder;
-
+    private final Board board = new Board();
 
     private static final int SOURCE_ARGS_COUNT = 4;
     private static final int DEST_ARGS_COUNT = 3;
@@ -95,12 +94,7 @@ public class CommandProcessor {
     private void updateSource(String[] parts) {
         this.sourceX = parseCoordinate(parts[1], "source X");
         this.sourceY = parseCoordinate(parts[2], "source Y");
-        this.direction = parts[3];
-        try {
-            GMan.getDirectionIndex(direction);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid direction: " + direction + ". Must be one of: N, E, S, W");
-        }
+        this.direction = Direction.fromString(parts[3]);
     }
 
     private void updateDestination(String[] parts) {
@@ -116,9 +110,9 @@ public class CommandProcessor {
             throw new IllegalArgumentException("Invalid coordinate: " + coordStr + ". Must be an integer.");
         }
 
-        if (coord < DEFAULT_COORDINATE || coord >= GMan.GRID_SIZE) {
+        if (coord < DEFAULT_COORDINATE || coord >= board.getSize()) {
             throw new IllegalArgumentException(
-                String.format("%s coordinate must be between 0 and %d", coordName, GMan.GRID_SIZE - 1));
+                String.format("%s coordinate must be between 0 and %d", coordName, board.getSize() - 1));
         }
         return coord;
     }

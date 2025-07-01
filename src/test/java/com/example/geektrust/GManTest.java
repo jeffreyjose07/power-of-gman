@@ -5,17 +5,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GManTest {
     @Test
-    public void testDirectionIndex() {
-        assertEquals(0, GMan.getDirectionIndex("N"));
-        assertEquals(1, GMan.getDirectionIndex("E"));
-        assertEquals(2, GMan.getDirectionIndex("S"));
-        assertEquals(3, GMan.getDirectionIndex("W"));
-        assertThrows(IllegalArgumentException.class, () -> GMan.getDirectionIndex("X"));
+    public void testDirectionParsing() {
+        assertEquals(Direction.N, Direction.fromString("N"));
+        assertEquals(Direction.E, Direction.fromString("E"));
+        assertEquals(Direction.S, Direction.fromString("S"));
+        assertEquals(Direction.W, Direction.fromString("W"));
+        assertThrows(IllegalArgumentException.class, () -> Direction.fromString("X"));
     }
 
     @Test
     public void testMoveForward() {
-        GMan gman = new GMan(2, 2, "N");
+        GMan gman = new GMan(2, 2, Direction.N);
         gman.moveForward();
         assertEquals(2, gman.getX());
         assertEquals(3, gman.getY());
@@ -23,28 +23,29 @@ public class GManTest {
 
     @Test
     public void testTurnLeftAndRight() {
-        GMan gman = new GMan(1, 1, "N");
+        GMan gman = new GMan(1, 1, Direction.N);
         gman.turnLeft();
-        assertEquals(3, gman.getDirIdx()); 
+        assertEquals(Direction.W, gman.getDirection());
         gman.turnRight();
-        assertEquals(0, gman.getDirIdx()); 
+        assertEquals(Direction.N, gman.getDirection());
     }
 
     @Test
     public void testInBounds() {
-        assertTrue(GMan.inBounds(0, 0));
-        assertTrue(GMan.inBounds(6, 6));
-        assertTrue(GMan.inBounds(0, 6));
-        assertTrue(GMan.inBounds(6, 0));
-        assertFalse(GMan.inBounds(-1, 0));
-        assertFalse(GMan.inBounds(0, 7));
-        assertFalse(GMan.inBounds(7, 7));
+        Board board = new Board();
+        assertTrue(board.inBounds(0, 0));
+        assertTrue(board.inBounds(6, 6));
+        assertTrue(board.inBounds(0, 6));
+        assertTrue(board.inBounds(6, 0));
+        assertFalse(board.inBounds(-1, 0));
+        assertFalse(board.inBounds(0, 7));
+        assertFalse(board.inBounds(7, 7));
     }
 
     @Test
     public void testEdgeMovement() {
-        GMan gman = new GMan(6, 6, "E");
+        GMan gman = new GMan(6, 6, Direction.E);
         gman.moveForward();
-        assertFalse(GMan.inBounds(gman.getX(), gman.getY()));
+        assertFalse(gman.inBounds());
     }
-} 
+}
