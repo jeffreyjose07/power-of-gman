@@ -40,7 +40,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>geektrust</finalName> <!-- Please do not change this final artifact name-->
+                    <finalName>geektrust</finalName> 
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
@@ -48,7 +48,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <!-- This is the main class of your program which will be executed-->
+                            
                             <mainClass>com.example.geektrust.Main</mainClass>
                         </manifest>
                     </archive>
@@ -81,7 +81,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!-- Code coverage plugin. Use only if you are adding unit tests. Do not change any of the values in the entries below -->
+            
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

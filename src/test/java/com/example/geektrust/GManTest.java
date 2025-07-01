@@ -25,9 +25,9 @@ public class GManTest {
     public void testTurnLeftAndRight() {
         GMan gman = new GMan(1, 1, "N");
         gman.turnLeft();
-        assertEquals(3, gman.getDirIdx()); // W
+        assertEquals(3, gman.getDirIdx()); 
         gman.turnRight();
-        assertEquals(0, gman.getDirIdx()); // N
+        assertEquals(0, gman.getDirIdx()); 
     }
 
     @Test

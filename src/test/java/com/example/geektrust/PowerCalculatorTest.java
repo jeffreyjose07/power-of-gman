@@ -9,19 +9,19 @@ public class PowerCalculatorTest {
     @Test
     public void testMinimalPath() {
         int result = calc.calculatePower(0, 0, 1, 0, "E");
-        assertEquals(190, result); // 1 move east
+        assertEquals(190, result); 
     }
 
     @Test
     public void testTurnRequired() {
         int result = calc.calculatePower(0, 0, 0, 1, "E");
-        assertEquals(185, result); // turn left to N, then move
+        assertEquals(185, result); 
     }
 
     @Test
     public void testUnreachable() {
         int result = calc.calculatePower(0, 0, 7, 7, "N");
-        assertEquals(0, result); // out of bounds, should return 0
+        assertEquals(0, result); 
     }
 
     @Test
