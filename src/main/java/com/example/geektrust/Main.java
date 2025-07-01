@@ -30,11 +30,20 @@ public class Main {
     }
     
     
+    private static final int ERROR_NO_INPUT = 1;
+    private static final int ERROR_FILE_NOT_FOUND = 2;
+    private static final int ERROR_IO = 3;
+    private static final int ERROR_UNEXPECTED = 4;
+
+    private static final int SOURCE_ARGS_COUNT = 4;
+    private static final int DEST_ARGS_COUNT = 3;
+    private static final int PRINT_ARGS_COUNT = 1;
+
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("Error: No input file provided.");
             System.err.println("Usage: java -jar <jar-file> <input-file>");
-            System.exit(1);
+            System.exit(ERROR_NO_INPUT);
         }
         
         Main app = new Main();
@@ -42,13 +51,13 @@ public class Main {
             app.processInputFile(args[0]);
         } catch (FileNotFoundException e) {
             System.err.println("Error: Input file not found: " + args[0]);
-            System.exit(2);
+            System.exit(ERROR_FILE_NOT_FOUND);
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e.getMessage());
-            System.exit(3);
+            System.exit(ERROR_IO);
         } catch (Exception e) {
             System.err.println("An unexpected error occurred: " + e.getMessage());
-            System.exit(4);
+            System.exit(ERROR_UNEXPECTED);
         }
     }
     
@@ -75,17 +84,17 @@ public class Main {
         try {
             switch (command) {
                 case "SOURCE":
-                    validateCommandParts(parts, 4);
+                    validateCommandParts(parts, SOURCE_ARGS_COUNT);
                     updateSource(parts);
                     break;
                     
                 case "DESTINATION":
-                    validateCommandParts(parts, 3);
+                    validateCommandParts(parts, DEST_ARGS_COUNT);
                     updateDestination(parts);
                     break;
                     
                 case "PRINT_POWER":
-                    validateCommandParts(parts, 1);
+                    validateCommandParts(parts, PRINT_ARGS_COUNT);
                     printRemainingPower();
                     break;
                     
@@ -129,7 +138,7 @@ public class Main {
     private int parseCoordinate(String coordStr, String coordName) {
         try {
             int coord = Integer.parseInt(coordStr);
-            if (coord < 0 || coord >= GMan.GRID_SIZE) {
+            if (coord < DEFAULT_COORDINATE || coord >= GMan.GRID_SIZE) {
                 throw new IllegalArgumentException(
                     String.format("%s coordinate must be between 0 and %d", coordName, GMan.GRID_SIZE - 1));
             }
