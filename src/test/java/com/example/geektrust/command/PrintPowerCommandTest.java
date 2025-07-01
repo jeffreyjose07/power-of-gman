@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
 
 import com.example.geektrust.command.CommandContext;
 import com.example.geektrust.command.PrintPowerCommand;

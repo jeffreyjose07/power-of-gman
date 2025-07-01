@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.model;
 
 import com.example.geektrust.model.Board;
 import com.example.geektrust.model.Direction;

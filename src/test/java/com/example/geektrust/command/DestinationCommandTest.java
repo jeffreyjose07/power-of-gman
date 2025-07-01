@@ -1,14 +1,14 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
 
 import com.example.geektrust.command.CommandContext;
-import com.example.geektrust.command.SourceCommand;
+import com.example.geektrust.command.DestinationCommand;
 import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
 import com.example.geektrust.service.PathFindingStrategy;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SourceCommandTest {
+public class DestinationCommandTest {
     @Test
     public void testExecuteUpdatesContext() {
         CommandContext ctx = new CommandContext(new PathFindingStrategy() {
@@ -17,10 +17,9 @@ public class SourceCommandTest {
                 return 0;
             }
         });
-        SourceCommand cmd = new SourceCommand(2, 3, Direction.S);
+        DestinationCommand cmd = new DestinationCommand(4, 5);
         cmd.execute(ctx);
-        assertEquals(2, ctx.getSourceX());
-        assertEquals(3, ctx.getSourceY());
-        assertEquals(Direction.S, ctx.getDirection());
+        assertEquals(4, ctx.getDestX());
+        assertEquals(5, ctx.getDestY());
     }
 }

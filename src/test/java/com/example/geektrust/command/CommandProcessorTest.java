@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
 
 import com.example.geektrust.command.CommandProcessor;
 import com.example.geektrust.model.Direction;
