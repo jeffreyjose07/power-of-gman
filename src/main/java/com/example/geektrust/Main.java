@@ -2,6 +2,9 @@ package com.example.geektrust;
 
 public class Main {
     private static final int ERROR_NO_INPUT = 1;
+    private static final int ERROR_FILE_NOT_FOUND = 2;
+    private static final int ERROR_IO = 3;
+    private static final int ERROR_UNEXPECTED = 4;
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -10,6 +13,14 @@ public class Main {
             System.exit(ERROR_NO_INPUT);
         }
 
-        new CommandProcessor().run(args[0]);
+        try {
+            new CommandProcessor().run(args[0]);
+        } catch (java.io.FileNotFoundException e) {
+            System.exit(ERROR_FILE_NOT_FOUND);
+        } catch (java.io.IOException e) {
+            System.exit(ERROR_IO);
+        } catch (RuntimeException e) {
+            System.exit(ERROR_UNEXPECTED);
+        }
     }
 }
