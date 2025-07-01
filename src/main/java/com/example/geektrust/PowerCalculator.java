@@ -30,20 +30,13 @@ public class PowerCalculator implements PathFindingStrategy {
         
         while (!pq.isEmpty()) {
             State curr = pq.poll();
-            
+
             if (isDestinationReached(curr, dX, dY)) {
                 minPowerSpent = Math.min(minPowerSpent, curr.getPowerSpent());
                 continue;
             }
-            
-            
-            tryMovingForward(curr, minPower, pq);
-            
-            
-            tryTurning(curr, minPower, pq, (curr.getDirIdx() + GMan.TURN_LEFT_OFFSET) % GMan.NUM_DIRECTIONS);
-            
-            
-            tryTurning(curr, minPower, pq, (curr.getDirIdx() + GMan.TURN_RIGHT_OFFSET) % GMan.NUM_DIRECTIONS);
+
+            exploreNeighbours(curr, minPower, pq);
         }
         
         return minPowerSpent;
@@ -71,8 +64,17 @@ public class PowerCalculator implements PathFindingStrategy {
     private boolean isDestinationReached(State current, int destX, int destY) {
         return current.getX() == destX && current.getY() == destY;
     }
-    
-    
+
+
+    private void exploreNeighbours(State current, int[][][] minPower, PriorityQueue<State> pq) {
+        tryMovingForward(current, minPower, pq);
+        tryTurning(current, minPower, pq,
+                   (current.getDirIdx() + GMan.TURN_LEFT_OFFSET) % GMan.NUM_DIRECTIONS);
+        tryTurning(current, minPower, pq,
+                   (current.getDirIdx() + GMan.TURN_RIGHT_OFFSET) % GMan.NUM_DIRECTIONS);
+    }
+
+
     private void tryMovingForward(State current, int[][][] minPower, PriorityQueue<State> pq) {
         int nx = current.getX() + GMan.DIR_DELTAS[current.getDirIdx()][GMan.X_INDEX];
         int ny = current.getY() + GMan.DIR_DELTAS[current.getDirIdx()][GMan.Y_INDEX];

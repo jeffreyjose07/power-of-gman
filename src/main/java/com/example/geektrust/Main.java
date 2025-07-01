@@ -41,16 +41,23 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.err.println("Error: No input file provided.");
-            System.err.println("Usage: java -jar <jar-file> <input-file>");
-            System.exit(ERROR_NO_INPUT);
+            printUsageAndExit();
         }
-        
-        Main app = new Main();
+
+        new Main().execute(args[0]);
+    }
+
+    private static void printUsageAndExit() {
+        System.err.println("Error: No input file provided.");
+        System.err.println("Usage: java -jar <jar-file> <input-file>");
+        System.exit(ERROR_NO_INPUT);
+    }
+
+    private void execute(String inputFile) {
         try {
-            app.processInputFile(args[0]);
+            processInputFile(inputFile);
         } catch (FileNotFoundException e) {
-            System.err.println("Error: Input file not found: " + args[0]);
+            System.err.println("Error: Input file not found: " + inputFile);
             System.exit(ERROR_FILE_NOT_FOUND);
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e.getMessage());
@@ -75,34 +82,35 @@ public class Main {
     
     private void processCommand(String commandLine) {
         if (commandLine.isEmpty()) {
-            return; 
+            return;
         }
-        
+
         String[] parts = commandLine.split("\\s+");
         String command = parts[0];
-        
+
         try {
-            switch (command) {
-                case "SOURCE":
-                    validateCommandParts(parts, SOURCE_ARGS_COUNT);
-                    updateSource(parts);
-                    break;
-                    
-                case "DESTINATION":
-                    validateCommandParts(parts, DEST_ARGS_COUNT);
-                    updateDestination(parts);
-                    break;
-                    
-                case "PRINT_POWER":
-                    validateCommandParts(parts, PRINT_ARGS_COUNT);
-                    printRemainingPower();
-                    break;
-                    
-                default:
-                    System.err.println("Warning: Unknown command: " + command);
-            }
+            handleCommand(command, parts);
         } catch (IllegalArgumentException e) {
             System.err.println("Error in command '" + command + "': " + e.getMessage());
+        }
+    }
+
+    private void handleCommand(String command, String[] parts) {
+        switch (command) {
+            case "SOURCE":
+                validateCommandParts(parts, SOURCE_ARGS_COUNT);
+                updateSource(parts);
+                break;
+            case "DESTINATION":
+                validateCommandParts(parts, DEST_ARGS_COUNT);
+                updateDestination(parts);
+                break;
+            case "PRINT_POWER":
+                validateCommandParts(parts, PRINT_ARGS_COUNT);
+                printRemainingPower();
+                break;
+            default:
+                System.err.println("Warning: Unknown command: " + command);
         }
     }
     
