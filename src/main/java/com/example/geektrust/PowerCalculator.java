@@ -34,62 +34,57 @@ public class PowerCalculator implements PathFindingStrategy {
         if (!GMan.inBounds(sX, sY) || !GMan.inBounds(dX, dY)) {
             return 0;
         }
-        int minPowerSpent = bfs(sX, sY, dX, dY, dir);
+        int minPowerSpent = dijkstra(sX, sY, dX, dY, dir);
         int remaining = INITIAL_POWER - minPowerSpent;
         return Math.max(remaining, 0);
     }
 
     /**
-     * Performs BFS to find the minimum power spent from source to destination.
+     * Performs Dijkstra's algorithm to find the minimum power spent from source to destination.
      */
-    private int bfs(int sX, int sY, int dX, int dY, String dir) {
+    private int dijkstra(int sX, int sY, int dX, int dY, String dir) {
         int startDirIdx = GMan.getDirectionIndex(dir);
-        boolean[][][] visited = new boolean[GMan.GRID_SIZE][GMan.GRID_SIZE][4];
-        Queue<State> queue = new LinkedList<>();
-        queue.add(new State(sX, sY, startDirIdx, 0));
-        visited[sX][sY][startDirIdx] = true;
+        int[][][] minPower = new int[GMan.GRID_SIZE][GMan.GRID_SIZE][4];
+        for (int[][] arr2d : minPower) {
+            for (int[] arr1d : arr2d) {
+                Arrays.fill(arr1d, Integer.MAX_VALUE);
+            }
+        }
+        PriorityQueue<State> pq = new PriorityQueue<>(Comparator.comparingInt(s -> s.powerSpent));
+        pq.add(new State(sX, sY, startDirIdx, 0));
+        minPower[sX][sY][startDirIdx] = 0;
         int minPowerSpent = Integer.MAX_VALUE;
-        while (!queue.isEmpty()) {
-            State curr = queue.poll();
-            if (isDestination(curr, dX, dY)) {
+        while (!pq.isEmpty()) {
+            State curr = pq.poll();
+            if (curr.x == dX && curr.y == dY) {
                 minPowerSpent = Math.min(minPowerSpent, curr.powerSpent);
                 continue;
             }
-            enqueueForward(curr, queue, visited);
-            enqueueTurn(curr, queue, visited, true);  // left
-            enqueueTurn(curr, queue, visited, false); // right
+            // Move forward
+            int nx = curr.x + GMan.DIR_DELTAS[curr.dirIdx][0];
+            int ny = curr.y + GMan.DIR_DELTAS[curr.dirIdx][1];
+            if (GMan.inBounds(nx, ny)) {
+                int newPower = curr.powerSpent + MOVE_COST;
+                if (newPower < minPower[nx][ny][curr.dirIdx]) {
+                    minPower[nx][ny][curr.dirIdx] = newPower;
+                    pq.add(new State(nx, ny, curr.dirIdx, newPower));
+                }
+            }
+            // Turn left
+            int leftDir = (curr.dirIdx + 3) % 4;
+            int leftPower = curr.powerSpent + TURN_COST;
+            if (leftPower < minPower[curr.x][curr.y][leftDir]) {
+                minPower[curr.x][curr.y][leftDir] = leftPower;
+                pq.add(new State(curr.x, curr.y, leftDir, leftPower));
+            }
+            // Turn right
+            int rightDir = (curr.dirIdx + 1) % 4;
+            int rightPower = curr.powerSpent + TURN_COST;
+            if (rightPower < minPower[curr.x][curr.y][rightDir]) {
+                minPower[curr.x][curr.y][rightDir] = rightPower;
+                pq.add(new State(curr.x, curr.y, rightDir, rightPower));
+            }
         }
         return minPowerSpent;
-    }
-
-    /**
-     * Checks if the current state is at the destination.
-     */
-    private boolean isDestination(State curr, int dX, int dY) {
-        return curr.x == dX && curr.y == dY;
-    }
-
-    /**
-     * Enqueues the forward move if valid.
-     */
-    private void enqueueForward(State curr, Queue<State> queue, boolean[][][] visited) {
-        int nx = curr.x + GMan.DIR_DELTAS[curr.dirIdx][0];
-        int ny = curr.y + GMan.DIR_DELTAS[curr.dirIdx][1];
-        if (GMan.inBounds(nx, ny) && !visited[nx][ny][curr.dirIdx]) {
-            visited[nx][ny][curr.dirIdx] = true;
-            queue.add(new State(nx, ny, curr.dirIdx, curr.powerSpent + MOVE_COST));
-        }
-    }
-
-    /**
-     * Enqueues a turn (left or right) if not already visited.
-     * @param left true for left, false for right
-     */
-    private void enqueueTurn(State curr, Queue<State> queue, boolean[][][] visited, boolean left) {
-        int newDir = left ? (curr.dirIdx + 3) % 4 : (curr.dirIdx + 1) % 4;
-        if (!visited[curr.x][curr.y][newDir]) {
-            visited[curr.x][curr.y][newDir] = true;
-            queue.add(new State(curr.x, curr.y, newDir, curr.powerSpent + TURN_COST));
-        }
     }
 } 
