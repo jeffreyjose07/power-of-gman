@@ -73,4 +73,18 @@ public class CommandFactoryTest {
         Command cmd = factory.fromLine("JUMP 1 1", board);
         assertNull(cmd);
     }
+
+    @Test
+    public void testNullLineReturnsNull() {
+        CommandFactory factory = new CommandFactory();
+        Board board = new Board();
+        assertNull(factory.fromLine(null, board));
+    }
+
+    @Test
+    public void testEmptyLineReturnsNull() {
+        CommandFactory factory = new CommandFactory();
+        Board board = new Board();
+        assertNull(factory.fromLine("   ", board));
+    }
 }
