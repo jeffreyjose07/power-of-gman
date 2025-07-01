@@ -1,36 +1,32 @@
 package com.example.geektrust;
 
-
 public class State {
-    private final int x;
-    private final int y;
-    private final int dirIdx;
+    private final Position position;
+    private final Direction direction;
     private final int powerSpent;
 
-    
-    public State(int x, int y, int dirIdx, int powerSpent) {
-        this.x = x;
-        this.y = y;
-        this.dirIdx = dirIdx;
+    public State(int x, int y, Direction direction, int powerSpent) {
+        this(new Position(x, y), direction, powerSpent);
+    }
+
+    public State(Position position, Direction direction, int powerSpent) {
+        this.position = position;
+        this.direction = direction;
         this.powerSpent = powerSpent;
     }
 
-    
     public int getX() {
-        return x;
+        return position.getX();
     }
 
-    
     public int getY() {
-        return y;
+        return position.getY();
     }
 
-    
-    public int getDirIdx() {
-        return dirIdx;
+    public Direction getDirection() {
+        return direction;
     }
 
-    
     public int getPowerSpent() {
         return powerSpent;
     }
