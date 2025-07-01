@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
 
 public interface Command {
     void execute(CommandContext context);

@@ -1,5 +1,15 @@
 package com.example.geektrust;
 
+import com.example.geektrust.command.Command;
+import com.example.geektrust.command.CommandContext;
+import com.example.geektrust.command.CommandFactory;
+import com.example.geektrust.command.DestinationCommand;
+import com.example.geektrust.command.PrintPowerCommand;
+import com.example.geektrust.command.SourceCommand;
+import com.example.geektrust.model.Board;
+import com.example.geektrust.model.Direction;
+import com.example.geektrust.model.Position;
+import com.example.geektrust.service.PathFindingStrategy;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

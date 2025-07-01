@@ -1,5 +1,10 @@
 package com.example.geektrust;
 
+import com.example.geektrust.command.CommandContext;
+import com.example.geektrust.command.PrintPowerCommand;
+import com.example.geektrust.model.Direction;
+import com.example.geektrust.model.Position;
+import com.example.geektrust.service.PathFindingStrategy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

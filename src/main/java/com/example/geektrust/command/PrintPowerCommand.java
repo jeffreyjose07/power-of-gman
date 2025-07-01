@@ -1,4 +1,6 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
+
+import com.example.geektrust.model.Position;
 
 public class PrintPowerCommand implements Command {
     @Override

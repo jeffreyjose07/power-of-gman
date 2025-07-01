@@ -1,5 +1,6 @@
 package com.example.geektrust;
 
+import com.example.geektrust.model.Board;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

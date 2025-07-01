@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.model;
 
 public enum Direction {
     N(0, 1),
