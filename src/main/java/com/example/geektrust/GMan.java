@@ -10,7 +10,13 @@ public class GMan {
     public static final String[] DIRECTIONS = {"N", "E", "S", "W"};
     
     
-    public static final int[][] DIR_DELTAS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; 
+    public static final int[][] DIR_DELTAS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    public static final int X_INDEX = 0;
+    public static final int Y_INDEX = 1;
+
+    public static final int NUM_DIRECTIONS = 4;
+    public static final int TURN_LEFT_OFFSET = 3;
+    public static final int TURN_RIGHT_OFFSET = 1;
     
     
     public static final int GRID_SIZE = 7;
@@ -39,18 +45,18 @@ public class GMan {
 
     
     public void moveForward() {
-        x += DIR_DELTAS[dirIdx][0];
-        y += DIR_DELTAS[dirIdx][1];
+        x += DIR_DELTAS[dirIdx][X_INDEX];
+        y += DIR_DELTAS[dirIdx][Y_INDEX];
     }
 
     
     public void turnLeft() {
-        dirIdx = (dirIdx + 3) % 4; 
+        dirIdx = (dirIdx + TURN_LEFT_OFFSET) % NUM_DIRECTIONS;
     }
 
     
     public void turnRight() {
-        dirIdx = (dirIdx + 1) % 4;
+        dirIdx = (dirIdx + TURN_RIGHT_OFFSET) % NUM_DIRECTIONS;
     }
 
     
