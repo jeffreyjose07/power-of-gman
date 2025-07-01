@@ -1,1 +1,7 @@
 target/*
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore JetBrains IDE project files
+.idea/
