@@ -1,5 +1,6 @@
 package com.example.geektrust.command;
 
+import com.example.geektrust.ApplicationError;
 import com.example.geektrust.service.PathFindingStrategy;
 import com.example.geektrust.service.PowerCalculator;
 
@@ -20,18 +21,18 @@ public class CommandProcessor {
         this.context = new CommandContext(pathFinder);
     }
 
-    public void run(String inputFile) throws IOException {
+    public void run(String inputFile) {
         try {
             processInputFile(inputFile);
         } catch (FileNotFoundException e) {
             System.err.println("Error: Input file not found: " + inputFile);
-            throw e;
+            System.exit(ApplicationError.FILE_NOT_FOUND.getExitCode());
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e.getMessage());
-            throw e;
-        } catch (Exception e) {
+            System.exit(ApplicationError.IO_ERROR.getExitCode());
+        } catch (RuntimeException e) {
             System.err.println("An unexpected error occurred: " + e.getMessage());
-            throw new RuntimeException(e);
+            System.exit(ApplicationError.UNEXPECTED_ERROR.getExitCode());
         }
     }
 
