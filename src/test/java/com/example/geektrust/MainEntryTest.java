@@ -1,6 +1,8 @@
 package com.example.geektrust;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.geektrust.ApplicationError;
 import java.io.File;
 import java.io.FileWriter;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +26,7 @@ public class MainEntryTest {
         System.setSecurityManager(sm);
         try {
             assertThrows(SecurityException.class, () -> Main.main(new String[]{}));
-            assertEquals(1, sm.status);
+            assertEquals(ApplicationError.NO_INPUT.getExitCode(), sm.status);
         } finally {
             System.setSecurityManager(original);
         }
@@ -37,7 +39,7 @@ public class MainEntryTest {
         System.setSecurityManager(sm);
         try {
             assertThrows(SecurityException.class, () -> Main.main(new String[]{"nofile.txt"}));
-            assertEquals(2, sm.status);
+            assertEquals(ApplicationError.FILE_NOT_FOUND.getExitCode(), sm.status);
         } finally {
             System.setSecurityManager(original);
         }
