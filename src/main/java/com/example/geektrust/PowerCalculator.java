@@ -78,14 +78,18 @@ public class PowerCalculator implements PathFindingStrategy {
     private void tryMovingForward(State current, int[][][] minPower, PriorityQueue<State> pq) {
         int nx = current.getX() + GMan.DIR_DELTAS[current.getDirIdx()][GMan.X_INDEX];
         int ny = current.getY() + GMan.DIR_DELTAS[current.getDirIdx()][GMan.Y_INDEX];
-        
-        if (GMan.inBounds(nx, ny)) {
-            int newPower = current.getPowerSpent() + MOVE_COST;
-            if (newPower < minPower[nx][ny][current.getDirIdx()]) {
-                minPower[nx][ny][current.getDirIdx()] = newPower;
-                pq.add(new State(nx, ny, current.getDirIdx(), newPower));
-            }
+
+        if (!GMan.inBounds(nx, ny)) {
+            return;
         }
+
+        int newPower = current.getPowerSpent() + MOVE_COST;
+        if (newPower >= minPower[nx][ny][current.getDirIdx()]) {
+            return;
+        }
+
+        minPower[nx][ny][current.getDirIdx()] = newPower;
+        pq.add(new State(nx, ny, current.getDirIdx(), newPower));
     }
     
     
