@@ -1,4 +1,9 @@
-package com.example.geektrust;
+package com.example.geektrust.service;
+
+import com.example.geektrust.model.Board;
+import com.example.geektrust.model.Direction;
+import com.example.geektrust.model.Position;
+import com.example.geektrust.model.State;
 
 import java.util.*;
 

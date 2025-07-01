@@ -1,4 +1,6 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
+
+import com.example.geektrust.model.Direction;
 
 public class SourceCommand implements Command {
     private final int x;

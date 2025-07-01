@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
 
 public class DestinationCommand implements Command {
     private final int x;

@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.model;
 
 public class Position {
     private final int x;

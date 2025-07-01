@@ -1,5 +1,7 @@
 package com.example.geektrust;
 
+import com.example.geektrust.command.CommandProcessor;
+
 public class Main {
     private static final int ERROR_NO_INPUT = 1;
     private static final int ERROR_FILE_NOT_FOUND = 2;

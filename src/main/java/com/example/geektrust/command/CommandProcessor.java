@@ -1,4 +1,7 @@
-package com.example.geektrust;
+package com.example.geektrust.command;
+
+import com.example.geektrust.service.PathFindingStrategy;
+import com.example.geektrust.service.PowerCalculator;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

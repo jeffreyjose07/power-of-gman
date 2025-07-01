@@ -1,5 +1,9 @@
 package com.example.geektrust;
 
+import com.example.geektrust.command.CommandContext;
+import com.example.geektrust.service.PathFindingStrategy;
+import com.example.geektrust.model.Direction;
+import com.example.geektrust.model.Position;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
