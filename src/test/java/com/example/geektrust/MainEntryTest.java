@@ -45,7 +45,7 @@ public class MainEntryTest {
 
     @Test
     public void testValidFile() throws Exception {
-        File temp = File.createTempFile("in", ".txt");
+        File temp = File.createTempFile("input", ".txt");
         try (FileWriter w = new FileWriter(temp)) {
             w.write("PRINT_POWER\n");
         }
