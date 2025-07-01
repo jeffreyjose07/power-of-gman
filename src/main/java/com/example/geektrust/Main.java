@@ -5,30 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-/**
- * Entry point for the Power of G-Man application.
- * 
- * <p>This class is responsible for:
- * <ul>
- *   <li>Reading input from a file</li>
- *   <li>Parsing commands (SOURCE, DESTINATION, PRINT_POWER)</li>
- *   <li>Delegating power calculation to the pathfinding strategy</li>
- *   <li>Displaying the result</li>
- * </ul>
- * 
- * <p>Expected input format (in a text file):
- * <pre>
- * SOURCE 1 2 N
- * DESTINATION 4 3
- * PRINT_POWER
- * </pre>
- */
+
 public class Main {
-    // Default values
+    
     private static final String DEFAULT_DIRECTION = "N";
     private static final int DEFAULT_COORDINATE = 0;
     
-    // State variables
+    
     private int sourceX = DEFAULT_COORDINATE;
     private int sourceY = DEFAULT_COORDINATE;
     private int destX = DEFAULT_COORDINATE;
@@ -36,27 +19,17 @@ public class Main {
     private String direction = DEFAULT_DIRECTION;
     private final PathFindingStrategy pathFinder;
     
-    /**
-     * Constructs a new Main instance with the default pathfinding strategy.
-     */
+    
     public Main() {
         this.pathFinder = new PowerCalculator();
     }
     
-    /**
-     * Constructs a new Main instance with a custom pathfinding strategy.
-     * 
-     * @param pathFinder The pathfinding strategy to use
-     */
+    
     public Main(PathFindingStrategy pathFinder) {
         this.pathFinder = pathFinder;
     }
     
-    /**
-     * The main entry point for the application.
-     * 
-     * @param args Command-line arguments (expects a single argument: input file path)
-     */
+    
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("Error: No input file provided.");
@@ -79,12 +52,7 @@ public class Main {
         }
     }
     
-    /**
-     * Processes the input file line by line and executes the commands.
-     * 
-     * @param filePath Path to the input file
-     * @throws IOException If an I/O error occurs while reading the file
-     */
+    
     private void processInputFile(String filePath) throws IOException {
         try (FileInputStream fis = new FileInputStream(filePath);
              Scanner scanner = new Scanner(fis)) {
@@ -95,14 +63,10 @@ public class Main {
         }
     }
     
-    /**
-     * Processes a single command from the input file.
-     * 
-     * @param commandLine The command line to process
-     */
+    
     private void processCommand(String commandLine) {
         if (commandLine.isEmpty()) {
-            return; // Skip empty lines
+            return; 
         }
         
         String[] parts = commandLine.split("\\s+");
@@ -133,13 +97,7 @@ public class Main {
         }
     }
     
-    /**
-     * Validates that the command has the correct number of parts.
-     * 
-     * @param parts The command parts
-     * @param expectedCount The expected number of parts
-     * @throws IllegalArgumentException If the number of parts is incorrect
-     */
+    
     private void validateCommandParts(String[] parts, int expectedCount) {
         if (parts.length != expectedCount) {
             throw new IllegalArgumentException(
@@ -147,17 +105,13 @@ public class Main {
         }
     }
     
-    /**
-     * Updates the source coordinates and direction.
-     * 
-     * @param parts The command parts (SOURCE x y direction)
-     */
+    
     private void updateSource(String[] parts) {
         this.sourceX = parseCoordinate(parts[1], "source X");
         this.sourceY = parseCoordinate(parts[2], "source Y");
         this.direction = parts[3];
         
-        // Validate direction
+        
         try {
             GMan.getDirectionIndex(direction);
         } catch (IllegalArgumentException e) {
@@ -165,24 +119,13 @@ public class Main {
         }
     }
     
-    /**
-     * Updates the destination coordinates.
-     * 
-     * @param parts The command parts (DESTINATION x y)
-     */
+    
     private void updateDestination(String[] parts) {
         this.destX = parseCoordinate(parts[1], "destination X");
         this.destY = parseCoordinate(parts[2], "destination Y");
     }
     
-    /**
-     * Parses a coordinate string into an integer and validates it's within bounds.
-     * 
-     * @param coordStr The coordinate string to parse
-     * @param coordName The name of the coordinate for error messages
-     * @return The parsed coordinate
-     * @throws IllegalArgumentException If the coordinate is invalid or out of bounds
-     */
+    
     private int parseCoordinate(String coordStr, String coordName) {
         try {
             int coord = Integer.parseInt(coordStr);
@@ -196,9 +139,7 @@ public class Main {
         }
     }
     
-    /**
-     * Calculates and prints the remaining power after traveling from source to destination.
-     */
+    
     private void printRemainingPower() {
         try {
             int remainingPower = pathFinder.calculatePower(sourceX, sourceY, destX, destY, direction);
