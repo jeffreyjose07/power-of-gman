@@ -1,4 +1,4 @@
-package com.example.geektrust;
+package com.example.geektrust.service;
 
 import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
