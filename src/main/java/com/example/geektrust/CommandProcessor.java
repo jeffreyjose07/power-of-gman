@@ -16,9 +16,6 @@ public class CommandProcessor {
     private String direction = DEFAULT_DIRECTION;
     private final PathFindingStrategy pathFinder;
 
-    private static final int ERROR_FILE_NOT_FOUND = 2;
-    private static final int ERROR_IO = 3;
-    private static final int ERROR_UNEXPECTED = 4;
 
     private static final int SOURCE_ARGS_COUNT = 4;
     private static final int DEST_ARGS_COUNT = 3;
@@ -32,18 +29,18 @@ public class CommandProcessor {
         this.pathFinder = pathFinder;
     }
 
-    public void run(String inputFile) {
+    public void run(String inputFile) throws IOException {
         try {
             processInputFile(inputFile);
         } catch (FileNotFoundException e) {
             System.err.println("Error: Input file not found: " + inputFile);
-            System.exit(ERROR_FILE_NOT_FOUND);
+            throw e;
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e.getMessage());
-            System.exit(ERROR_IO);
+            throw e;
         } catch (Exception e) {
             System.err.println("An unexpected error occurred: " + e.getMessage());
-            System.exit(ERROR_UNEXPECTED);
+            throw new RuntimeException(e);
         }
     }
 
