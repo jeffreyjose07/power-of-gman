@@ -14,15 +14,10 @@ import java.util.Queue;
  * Costs are multiples of 5 so the queue processes states in
  * increasing cost units.
  */
-public class BFSPathFinder implements PathFinder {
-    private final Board board;
-    private final int moveCost;
-    private final int turnCost;
+public class BFSPathFinder extends AbstractPathFinder {
 
     public BFSPathFinder(Board board, int moveCost, int turnCost) {
-        this.board = board;
-        this.moveCost = moveCost;
-        this.turnCost = turnCost;
+        super(board, moveCost, turnCost);
     }
 
     @Override
@@ -50,30 +45,11 @@ public class BFSPathFinder implements PathFinder {
                 continue;
             }
             // move forward
-            int nx = cur.getX() + cur.getDirection().dx();
-            int ny = cur.getY() + cur.getDirection().dy();
-            if (board.inBounds(nx, ny)) {
-                int newCost = cur.getPowerSpent() + moveCost;
-                int dirIdx = cur.getDirection().ordinal();
-                if (newCost < minCost[nx][ny][dirIdx]) {
-                    minCost[nx][ny][dirIdx] = newCost;
-                    q.add(new State(nx, ny, cur.getDirection(), newCost));
-                }
-            }
+            moveForward(cur, minCost, q, dest);
             // turn left
-            Direction left = cur.getDirection().left();
-            int lCost = cur.getPowerSpent() + turnCost;
-            if (lCost < minCost[cur.getX()][cur.getY()][left.ordinal()]) {
-                minCost[cur.getX()][cur.getY()][left.ordinal()] = lCost;
-                q.add(new State(cur.getX(), cur.getY(), left, lCost));
-            }
+            turnLeft(cur, minCost, q, dest);
             // turn right
-            Direction right = cur.getDirection().right();
-            int rCost = cur.getPowerSpent() + turnCost;
-            if (rCost < minCost[cur.getX()][cur.getY()][right.ordinal()]) {
-                minCost[cur.getX()][cur.getY()][right.ordinal()] = rCost;
-                q.add(new State(cur.getX(), cur.getY(), right, rCost));
-            }
+            turnRight(cur, minCost, q, dest);
         }
         return best;
     }

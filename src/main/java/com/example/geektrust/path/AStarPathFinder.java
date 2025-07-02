@@ -10,21 +10,21 @@ import java.util.*;
 /**
  * A* path finder for extensible use cases.
  */
-public class AStarPathFinder implements PathFinder {
-    private final Board board;
-    private final int moveCost;
-    private final int turnCost;
+public class AStarPathFinder extends AbstractPathFinder {
 
     public AStarPathFinder(Board board, int moveCost, int turnCost) {
-        this.board = board;
-        this.moveCost = moveCost;
-        this.turnCost = turnCost;
+        super(board, moveCost, turnCost);
     }
 
     private int heuristic(Position p, Position dest) {
         int dx = Math.abs(p.getX() - dest.getX());
         int dy = Math.abs(p.getY() - dest.getY());
         return (dx + dy) * Math.min(moveCost, turnCost);
+    }
+
+    @Override
+    protected int computePriority(Position pos, int costSoFar, Position dest) {
+        return costSoFar + heuristic(pos, dest);
     }
 
     @Override
@@ -52,33 +52,11 @@ public class AStarPathFinder implements PathFinder {
                 continue;
             }
             // move forward
-            int nx = cur.getX() + cur.getDirection().dx();
-            int ny = cur.getY() + cur.getDirection().dy();
-            if (board.inBounds(nx, ny)) {
-                int newCost = cur.getPowerSpent() + moveCost;
-                int dirIdx = cur.getDirection().ordinal();
-                if (newCost < gScore[nx][ny][dirIdx]) {
-                    gScore[nx][ny][dirIdx] = newCost;
-                    int f = newCost + heuristic(new Position(nx, ny), dest);
-                    open.add(new State(nx, ny, cur.getDirection(), f));
-                }
-            }
+            moveForward(cur, gScore, open, dest);
             // turn left
-            Direction left = cur.getDirection().left();
-            int lCost = cur.getPowerSpent() + turnCost;
-            if (lCost < gScore[cur.getX()][cur.getY()][left.ordinal()]) {
-                gScore[cur.getX()][cur.getY()][left.ordinal()] = lCost;
-                int f = lCost + heuristic(new Position(cur.getX(), cur.getY()), dest);
-                open.add(new State(cur.getX(), cur.getY(), left, f));
-            }
+            turnLeft(cur, gScore, open, dest);
             // turn right
-            Direction right = cur.getDirection().right();
-            int rCost = cur.getPowerSpent() + turnCost;
-            if (rCost < gScore[cur.getX()][cur.getY()][right.ordinal()]) {
-                gScore[cur.getX()][cur.getY()][right.ordinal()] = rCost;
-                int f = rCost + heuristic(new Position(cur.getX(), cur.getY()), dest);
-                open.add(new State(cur.getX(), cur.getY(), right, f));
-            }
+            turnRight(cur, gScore, open, dest);
         }
         return best;
     }
