@@ -19,8 +19,7 @@ public class SourceCommandTest {
         });
         SourceCommand cmd = new SourceCommand(2, 3, Direction.S);
         cmd.execute(ctx);
-        assertEquals(2, ctx.getSourceX());
-        assertEquals(3, ctx.getSourceY());
+        assertEquals(new Position(2,3), ctx.getSource());
         assertEquals(Direction.S, ctx.getDirection());
     }
 }

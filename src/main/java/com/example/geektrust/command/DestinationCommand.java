@@ -1,16 +1,16 @@
 package com.example.geektrust.command;
 
+import com.example.geektrust.model.Position;
+
 public class DestinationCommand implements Command {
-    private final int x;
-    private final int y;
+    private final Position position;
 
     public DestinationCommand(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.position = new Position(x, y);
     }
 
     @Override
     public void execute(CommandContext context) {
-        context.setDestination(x, y);
+        context.updateDestination(position);
     }
 }

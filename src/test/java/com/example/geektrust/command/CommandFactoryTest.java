@@ -33,8 +33,7 @@ public class CommandFactoryTest {
         assertTrue(cmd instanceof SourceCommand);
         CommandContext ctx = new CommandContext(new StubPathFinder(0));
         cmd.execute(ctx);
-        assertEquals(1, ctx.getSourceX());
-        assertEquals(2, ctx.getSourceY());
+        assertEquals(new Position(1,2), ctx.getSource());
         assertEquals(Direction.N, ctx.getDirection());
     }
 
@@ -46,8 +45,7 @@ public class CommandFactoryTest {
         assertTrue(cmd instanceof DestinationCommand);
         CommandContext ctx = new CommandContext(new StubPathFinder(0));
         cmd.execute(ctx);
-        assertEquals(2, ctx.getDestX());
-        assertEquals(3, ctx.getDestY());
+        assertEquals(new Position(2,3), ctx.getDestination());
     }
 
     @Test
@@ -67,11 +65,11 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void testUnknownCommandReturnsNull() {
+    public void testUnknownCommandThrows() {
         CommandFactory factory = new CommandFactory();
         Board board = new Board();
-        Command cmd = factory.fromLine("JUMP 1 1", board);
-        assertNull(cmd);
+        assertThrows(IllegalArgumentException.class,
+                () -> factory.fromLine("JUMP 1 1", board));
     }
 
     @Test

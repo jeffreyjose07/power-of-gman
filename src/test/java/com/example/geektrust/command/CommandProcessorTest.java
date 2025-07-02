@@ -58,7 +58,7 @@ public class CommandProcessorTest {
     public void testRunWithValidCommands() throws Exception {
         File input = createTempInput("SOURCE 0 0 N\nDESTINATION 1 0\nPRINT_POWER\n");
         CommandProcessor cp = new CommandProcessor(new StubPathFinder(123));
-        assertDoesNotThrow(() -> cp.run(input.getAbsolutePath()));
+        assertDoesNotThrow(() -> cp.process(input.getAbsolutePath()));
         assertTrue(outContent.toString().contains("POWER 123"));
     }
 
@@ -66,15 +66,13 @@ public class CommandProcessorTest {
     public void testInvalidCoordinateShowsError() throws Exception {
         File input = createTempInput("SOURCE 7 0 N\nPRINT_POWER\n");
         CommandProcessor cp = new CommandProcessor(new StubPathFinder(0));
-        cp.run(input.getAbsolutePath());
-        assertTrue(errContent.toString().contains("coordinate"));
+        assertThrows(IllegalArgumentException.class, () -> cp.process(input.getAbsolutePath()));
     }
 
     @Test
     public void testUnknownCommandWarns() throws Exception {
         File input = createTempInput("JUMP 1 1\n");
         CommandProcessor cp = new CommandProcessor(new StubPathFinder(0));
-        cp.run(input.getAbsolutePath());
-        assertTrue(errContent.toString().contains("Unknown command"));
+        assertThrows(IllegalArgumentException.class, () -> cp.process(input.getAbsolutePath()));
     }
 }
