@@ -5,11 +5,11 @@ import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
 import com.example.geektrust.model.State;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
-/**
- * A* path finder for extensible use cases.
- */
+
 public class AStarPathFinder extends AbstractPathFinder {
 
     public AStarPathFinder(Board board, int moveCost, int turnCost) {
@@ -29,17 +29,9 @@ public class AStarPathFinder extends AbstractPathFinder {
 
     @Override
     public int findMinPower(Position source, Position dest, Direction startDir) {
-        int size = board.getSize();
-        int dirCount = Direction.values().length;
-        int[][][] gScore = new int[size][size][dirCount];
-        for (int[][] arr2d : gScore) {
-            for (int[] arr1d : arr2d) {
-                Arrays.fill(arr1d, Integer.MAX_VALUE);
-            }
-        }
+        int[][][] gScore = newCostArray();
         PriorityQueue<State> open = new PriorityQueue<>(Comparator.comparingInt(s -> s.getPowerSpent()));
-        open.add(new State(source, startDir, 0));
-        gScore[source.getX()][source.getY()][startDir.ordinal()] = 0;
+        enqueueStart(source, startDir, gScore, open);
         int best = Integer.MAX_VALUE;
 
         while (!open.isEmpty()) {
@@ -51,11 +43,8 @@ public class AStarPathFinder extends AbstractPathFinder {
             if (cur.getPowerSpent() >= best) {
                 continue;
             }
-            // move forward
             moveForward(cur, gScore, open, dest);
-            // turn left
             turnLeft(cur, gScore, open, dest);
-            // turn right
             turnRight(cur, gScore, open, dest);
         }
         return best;
