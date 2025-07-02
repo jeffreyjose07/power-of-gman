@@ -20,20 +20,16 @@ public class CommandContextTest {
         StubPathFinder pf = new StubPathFinder();
         CommandContext ctx = new CommandContext(pf);
         // defaults
-        assertEquals(0, ctx.getSourceX());
-        assertEquals(0, ctx.getSourceY());
+        assertEquals(new Position(0,0), ctx.getSource());
         assertEquals(Direction.N, ctx.getDirection());
-        assertEquals(0, ctx.getDestX());
-        assertEquals(0, ctx.getDestY());
+        assertEquals(new Position(0,0), ctx.getDestination());
         assertSame(pf, ctx.getPathFinder());
         assertNotNull(ctx.getBoard());
 
-        ctx.setSource(1, 2, Direction.E);
-        ctx.setDestination(3, 4);
-        assertEquals(1, ctx.getSourceX());
-        assertEquals(2, ctx.getSourceY());
+        ctx.updateSource(new Position(1, 2), Direction.E);
+        ctx.updateDestination(new Position(3, 4));
+        assertEquals(new Position(1,2), ctx.getSource());
         assertEquals(Direction.E, ctx.getDirection());
-        assertEquals(3, ctx.getDestX());
-        assertEquals(4, ctx.getDestY());
+        assertEquals(new Position(3,4), ctx.getDestination());
     }
 }

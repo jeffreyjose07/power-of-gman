@@ -19,7 +19,6 @@ public class DestinationCommandTest {
         });
         DestinationCommand cmd = new DestinationCommand(4, 5);
         cmd.execute(ctx);
-        assertEquals(4, ctx.getDestX());
-        assertEquals(5, ctx.getDestY());
+        assertEquals(new Position(4,5), ctx.getDestination());
     }
 }

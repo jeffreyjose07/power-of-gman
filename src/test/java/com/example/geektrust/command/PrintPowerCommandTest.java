@@ -37,8 +37,8 @@ public class PrintPowerCommandTest {
                 return 99;
             }
         });
-        ctx.setSource(0, 0, Direction.N);
-        ctx.setDestination(1, 1);
+        ctx.updateSource(new Position(0,0), Direction.N);
+        ctx.updateDestination(new Position(1,1));
         PrintPowerCommand cmd = new PrintPowerCommand();
         cmd.execute(ctx);
         assertTrue(outContent.toString().contains("POWER 99"));

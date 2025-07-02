@@ -3,24 +3,31 @@ package com.example.geektrust.service;
 import com.example.geektrust.model.Board;
 import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
-import com.example.geektrust.service.DijkstraPathFinder;
+import com.example.geektrust.path.BFSPathFinder;
+import com.example.geektrust.path.PathFinder;
 
 
 public class PowerCalculator implements PathFindingStrategy {
-    public static final int INITIAL_POWER = 200;
-    public static final int MOVE_COST = 10;
-    public static final int TURN_COST = 5;
+    public static final int DEFAULT_INITIAL_POWER = 200;
+    public static final int DEFAULT_MOVE_COST = 10;
+    public static final int DEFAULT_TURN_COST = 5;
 
     private final Board board;
-    private final DijkstraPathFinder finder;
+    private final PathFinder finder;
+    private final int initialPower;
+    private final int moveCost;
+    private final int turnCost;
 
     public PowerCalculator() {
-        this(new Board());
+        this(new Board(), DEFAULT_INITIAL_POWER, DEFAULT_MOVE_COST, DEFAULT_TURN_COST);
     }
 
-    public PowerCalculator(Board board) {
+    public PowerCalculator(Board board, int initialPower, int moveCost, int turnCost) {
         this.board = board;
-        this.finder = new DijkstraPathFinder(board);
+        this.initialPower = initialPower;
+        this.moveCost = moveCost;
+        this.turnCost = turnCost;
+        this.finder = new BFSPathFinder(board, moveCost, turnCost);
     }
 
     @Override
@@ -29,7 +36,7 @@ public class PowerCalculator implements PathFindingStrategy {
             return 0;
         }
         int minPowerSpent = finder.findMinPower(source, destination, dir);
-        int remaining = INITIAL_POWER - minPowerSpent;
+        int remaining = initialPower - minPowerSpent;
         return Math.max(remaining, 0);
     }
 }

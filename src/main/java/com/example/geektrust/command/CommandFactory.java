@@ -17,11 +17,16 @@ class CommandFactory {
         Command parse(String[] parts, Board board);
     }
 
-    private static final Map<String, CommandParser> PARSERS = new HashMap<>();
-    static {
-        PARSERS.put("SOURCE", CommandFactory::parseSource);
-        PARSERS.put("DESTINATION", CommandFactory::parseDestination);
-        PARSERS.put("PRINT_POWER", CommandFactory::parsePrintPower);
+    private final Map<String, CommandParser> parsers = new HashMap<>();
+
+    CommandFactory() {
+        register("SOURCE", CommandFactory::parseSource);
+        register("DESTINATION", CommandFactory::parseDestination);
+        register("PRINT_POWER", CommandFactory::parsePrintPower);
+    }
+
+    void register(String name, CommandParser parser) {
+        parsers.put(name, parser);
     }
 
     Command fromLine(String line, Board board) {
@@ -29,10 +34,9 @@ class CommandFactory {
             return null;
         }
         String[] parts = line.trim().split("\\s+");
-        CommandParser parser = PARSERS.get(parts[0]);
+        CommandParser parser = parsers.get(parts[0]);
         if (parser == null) {
-            System.err.println("Warning: Unknown command: " + parts[0]);
-            return null;
+            throw new IllegalArgumentException("Unknown command: " + parts[0]);
         }
         return parser.parse(parts, board);
     }
