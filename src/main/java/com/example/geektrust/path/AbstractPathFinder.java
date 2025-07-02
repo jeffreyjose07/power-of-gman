@@ -5,11 +5,10 @@ import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
 import com.example.geektrust.model.State;
 
+import java.util.Arrays;
 import java.util.Queue;
 
-/**
- * Provides common movement operations for path finders.
- */
+
 public abstract class AbstractPathFinder implements PathFinder {
     protected final Board board;
     protected final int moveCost;
@@ -21,12 +20,29 @@ public abstract class AbstractPathFinder implements PathFinder {
         this.turnCost = turnCost;
     }
 
-    /**
-     * Determine the priority with which a state should be queued.
-     * By default this is the cost spent so far.
-     */
+
     protected int computePriority(Position pos, int costSoFar, Position dest) {
         return costSoFar;
+    }
+
+
+    protected int[][][] newCostArray() {
+        int size = board.getSize();
+        int dirCount = Direction.values().length;
+        int[][][] costs = new int[size][size][dirCount];
+        for (int[][] arr2d : costs) {
+            for (int[] arr1d : arr2d) {
+                Arrays.fill(arr1d, Integer.MAX_VALUE);
+            }
+        }
+        return costs;
+    }
+
+
+    protected void enqueueStart(Position source, Direction startDir,
+                                int[][][] costs, Queue<State> q) {
+        q.add(new State(source, startDir, 0));
+        costs[source.getX()][source.getY()][startDir.ordinal()] = 0;
     }
 
     protected void moveForward(State cur, int[][][] costs, Queue<State> q, Position dest) {

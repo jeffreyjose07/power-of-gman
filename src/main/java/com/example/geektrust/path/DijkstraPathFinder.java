@@ -5,13 +5,10 @@ import com.example.geektrust.model.Direction;
 import com.example.geektrust.model.Position;
 import com.example.geektrust.model.State;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-/**
- * Classic Dijkstra search over (x,y,direction) states.
- */
+
 public class DijkstraPathFinder extends AbstractPathFinder {
 
     public DijkstraPathFinder(Board board, int moveCost, int turnCost) {
@@ -20,17 +17,9 @@ public class DijkstraPathFinder extends AbstractPathFinder {
 
     @Override
     public int findMinPower(Position source, Position dest, Direction startDir) {
-        int size = board.getSize();
-        int dirCount = Direction.values().length;
-        int[][][] minCost = new int[size][size][dirCount];
-        for (int[][] arr2d : minCost) {
-            for (int[] arr1d : arr2d) {
-                Arrays.fill(arr1d, Integer.MAX_VALUE);
-            }
-        }
+        int[][][] minCost = newCostArray();
         PriorityQueue<State> pq = new PriorityQueue<>(Comparator.comparingInt(State::getPowerSpent));
-        pq.add(new State(source, startDir, 0));
-        minCost[source.getX()][source.getY()][startDir.ordinal()] = 0;
+        enqueueStart(source, startDir, minCost, pq);
         int best = Integer.MAX_VALUE;
 
         while (!pq.isEmpty()) {
@@ -42,11 +31,8 @@ public class DijkstraPathFinder extends AbstractPathFinder {
                 best = Math.min(best, cur.getPowerSpent());
                 continue;
             }
-            // move forward
             moveForward(cur, minCost, pq, dest);
-            // turn left
             turnLeft(cur, minCost, pq, dest);
-            // turn right
             turnRight(cur, minCost, pq, dest);
         }
         return best;
