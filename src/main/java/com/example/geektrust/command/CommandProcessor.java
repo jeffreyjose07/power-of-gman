@@ -25,14 +25,29 @@ public class CommandProcessor {
         try {
             processInputFile(inputFile);
         } catch (FileNotFoundException e) {
-            System.err.println("Error: Input file not found: " + inputFile);
-            System.exit(ApplicationError.FILE_NOT_FOUND.getExitCode());
+            handleError("Error: Input file not found: " + inputFile, ApplicationError.FILE_NOT_FOUND);
         } catch (IOException e) {
-            System.err.println("Error reading input file: " + e.getMessage());
-            System.exit(ApplicationError.IO_ERROR.getExitCode());
+            handleError("Error reading input file: " + e.getMessage(), ApplicationError.IO_ERROR);
         } catch (RuntimeException e) {
-            System.err.println("An unexpected error occurred: " + e.getMessage());
-            System.exit(ApplicationError.UNEXPECTED_ERROR.getExitCode());
+            handleError("An unexpected error occurred: " + e.getMessage(), ApplicationError.UNEXPECTED_ERROR);
+        }
+    }
+    
+    protected void handleError(String message, ApplicationError error) {
+        System.err.println(message);
+        if (!isTestMode()) {
+            System.exit(error.getExitCode());
+        } else {
+            throw new RuntimeException(message);
+        }
+    }
+    
+    private boolean isTestMode() {
+        try {
+            Class.forName("org.junit.jupiter.api.Test");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
     }
 
@@ -46,13 +61,19 @@ public class CommandProcessor {
     }
 
     private void processCommand(String commandLine) {
+        if (commandLine == null || commandLine.trim().isEmpty()) {
+            return;
+        }
+        
         try {
             Command command = factory.fromLine(commandLine, context.getBoard());
             if (command != null) {
                 command.execute(context);
             }
         } catch (IllegalArgumentException e) {
-            System.err.println("Error in command: " + e.getMessage());
+            System.err.println("Error in command '" + commandLine + "': " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error processing command '" + commandLine + "': " + e.getMessage());
         }
     }
 }

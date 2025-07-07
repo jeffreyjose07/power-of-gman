@@ -43,18 +43,22 @@ class CommandFactory {
 
     private static Command parseSource(String[] parts, Board board) {
         validateLength(parts, SOURCE_ARGS_COUNT);
+        
         int sX = parseInt(parts[1], "source X");
         int sY = parseInt(parts[2], "source Y");
-        Direction dir = Direction.fromString(parts[3]);
         validateCoord(board, sX, sY);
+        
+        Direction dir = Direction.fromString(parts[3]);
         return new SourceCommand(sX, sY, dir);
     }
 
     private static Command parseDestination(String[] parts, Board board) {
         validateLength(parts, DEST_ARGS_COUNT);
+        
         int dX = parseInt(parts[1], "destination X");
         int dY = parseInt(parts[2], "destination Y");
         validateCoord(board, dX, dY);
+        
         return new DestinationCommand(dX, dY);
     }
 

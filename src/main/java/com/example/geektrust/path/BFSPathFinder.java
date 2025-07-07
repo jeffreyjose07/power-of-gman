@@ -16,25 +16,7 @@ public class BFSPathFinder extends AbstractPathFinder {
     }
 
     @Override
-    public int findMinPower(Position source, Position dest, Direction startDir) {
-        int[][][] minCost = newCostArray();
-        Queue<State> q = new LinkedList<>();
-        enqueueStart(source, startDir, minCost, q);
-        int best = Integer.MAX_VALUE;
-
-        while (!q.isEmpty()) {
-            State cur = q.poll();
-            if (cur.getX() == dest.getX() && cur.getY() == dest.getY()) {
-                best = Math.min(best, cur.getPowerSpent());
-                continue;
-            }
-            if (cur.getPowerSpent() >= best) {
-                continue;
-            }
-            moveForward(cur, minCost, q, dest);
-            turnLeft(cur, minCost, q, dest);
-            turnRight(cur, minCost, q, dest);
-        }
-        return best;
+    protected Queue<State> createQueue() {
+        return new LinkedList<>();
     }
 }

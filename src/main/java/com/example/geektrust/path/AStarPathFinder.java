@@ -8,6 +8,7 @@ import com.example.geektrust.model.State;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 
 public class AStarPathFinder extends AbstractPathFinder {
@@ -28,25 +29,7 @@ public class AStarPathFinder extends AbstractPathFinder {
     }
 
     @Override
-    public int findMinPower(Position source, Position dest, Direction startDir) {
-        int[][][] gScore = newCostArray();
-        PriorityQueue<State> open = new PriorityQueue<>(Comparator.comparingInt(s -> s.getPowerSpent()));
-        enqueueStart(source, startDir, gScore, open);
-        int best = Integer.MAX_VALUE;
-
-        while (!open.isEmpty()) {
-            State cur = open.poll();
-            if (cur.getX() == dest.getX() && cur.getY() == dest.getY()) {
-                best = Math.min(best, cur.getPowerSpent());
-                continue;
-            }
-            if (cur.getPowerSpent() >= best) {
-                continue;
-            }
-            moveForward(cur, gScore, open, dest);
-            turnLeft(cur, gScore, open, dest);
-            turnRight(cur, gScore, open, dest);
-        }
-        return best;
+    protected Queue<State> createQueue() {
+        return new PriorityQueue<>(Comparator.comparingInt(State::getPowerSpent));
     }
 }

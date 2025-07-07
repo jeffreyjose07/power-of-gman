@@ -35,7 +35,16 @@ public class PowerCalculator implements PathFindingStrategy {
         if (!board.inBounds(source) || !board.inBounds(destination)) {
             return 0;
         }
+        
+        if (source.equals(destination)) {
+            return initialPower;
+        }
+        
         int minPowerSpent = finder.findMinPower(source, destination, dir);
+        if (minPowerSpent == Integer.MAX_VALUE) {
+            return 0;
+        }
+        
         int remaining = initialPower - minPowerSpent;
         return Math.max(remaining, 0);
     }
