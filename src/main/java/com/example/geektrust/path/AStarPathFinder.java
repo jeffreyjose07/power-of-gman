@@ -20,7 +20,7 @@ public class AStarPathFinder extends AbstractPathFinder {
     private int heuristic(Position p, Position dest) {
         int dx = Math.abs(p.getX() - dest.getX());
         int dy = Math.abs(p.getY() - dest.getY());
-        return (dx + dy) * Math.min(moveCost, turnCost);
+        return (dx + dy) * Math.min(costCalculator.getMoveCost(), costCalculator.getTurnCost());
     }
 
     @Override
